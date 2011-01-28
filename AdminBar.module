@@ -152,6 +152,12 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		  $this->session->remove('pageSaved');
 		}
 
+		// We want to hide "view" button from modal admin view
+		if($page->template == 'admin' && $this->input->get->modal) {
+			$out = "\n\t<style>#_ProcessPageEditView {display: none;}</style></head>";
+			$event->return = str_ireplace('</head>', $out, $event->return);
+		}
+
 		// if the page isn't editable, or if it's using the admin template, abort.
 		if(!$page->editable() || $page->template == 'admin') return;
 
