@@ -91,27 +91,38 @@ jQuery(document).ready(function($) {
 
   $mlLink.click(function(e) {
     e.preventDefault();
+
     $(document).scrollTop(0)
     if (!$m.hasClass('collapsed')) {
 		collapse();
 	}
     $(this).text('Continue editing');
 
-    // We want to add #ab-modal-bg to DOM only once
-    if (!mlGenerated) {
-      mlGenerated = true;
-      $mlBg.prependTo('body');
-      $ml.appendTo($mlBg);
+	// If modal have been generated at least once, but we now click different
+	// action than before, then we will remove current iFrame and re-create it later
+	if (mlGenerated && $ml.data('activeState') != e.target.className) {
+		mlGenerated = false;
+		$iframe.remove();
+    }
 
-      // Create iFrame for admin page
-      $iframe = $('<iframe name="ab_modal_iframe" id="ab_modal_iframe" frameborder="0" src="'+ $(this).attr('href') +'"></iframe>')
-      .css('width', '100%')
-      .css('height', $(window).height() - 120)
-      .appendTo($ml);
+	if (!mlGenerated) {
+		mlGenerated = true;
+		$mlBg.prependTo('body');
+		$ml.appendTo($mlBg);
 
-      $mlBg.trigger('open');
-    } else {
-      $mlBg.trigger('open');
+
+		// We save the class of the link as the modal active state (modal edit or modal add)
+		$ml.data('activeState', e.target.className);
+
+		// Create iFrame for admin page
+		$iframe = $('<iframe name="ab_modal_iframe" id="ab_modal_iframe" frameborder="0" src="'+ $(this).attr('href') +'"></iframe>')
+		.css('width', '100%')
+		.css('height', $(window).height() - 120)
+		.appendTo($ml);
+
+		$mlBg.trigger('open');
+	} else {
+		$mlBg.trigger('open');
     }
 
 
