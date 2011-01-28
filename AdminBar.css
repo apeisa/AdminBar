@@ -7,70 +7,71 @@
 	- hot pink: #f3008b
 */
 
-#editbar{
+#adminbar{
 	position: fixed; left: 0px; top: 100px; width: 200px;
 	font: normal 12px/20px "Lucida Grande", Tahoma, sans-serif;
 }
-	#editbar ul { list-style: none; }
+	#adminbar ul { list-style: none; }
 	/* main color settings for links */
-	#editbar .menu li a, #editbar .shortcuts li a{
+	#adminbar .menu li a, #adminbar .shortcuts li a{
 		display: block;
 		background-color: #dbe9ee; border-top: 1px solid #e6f0f3; border-bottom: 1px solid #cbdadf;
 		color: black; font-weight: bold; text-decoration: none; text-shadow: 0px 1px 0px white;
 	}
-	#editbar .menu li a:hover, #editbar .shortcuts li a:hover{
+	#adminbar .menu li a:hover, #adminbar .shortcuts li a:hover{
 		background-color: #f3008b; border-top: 1px solid #fa99d1; border-bottom: 1px solid #c2006f;
 		color: white; text-shadow: 0px 1px 0px rgba(0,0,0,.4);
 	}
 
 	/* main box (the one that holds data when NOT collapsed) */
-	#editbar .main {
+	#adminbar .main {
 		overflow: hidden; position: relative; z-index: 999;
 		background: #dbe9ee; border-bottom: 1px solid #3e545b; border-right: 1px solid #3e545b;
 	}
 
 	/* logged in user bar */
-	#editbar .logged-in {
+	#adminbar .logged-in {
 		height: 20px; padding: 10px 10px 10px 5px;
 		background: #3e545b url(sprites.png) no-repeat 140px -40px; border-bottom: 1px solid #4c6168;
 	}
-	#editbar .logged-in a {
+	#adminbar .logged-in a {
 		color: #dbe9ee; display: block; font-weight: bold; height: 20px; text-shadow: 0px 1px 1px rgba(0,0,0,.4);
 		padding-left: 30px; background: url(sprites.png) no-repeat -68px -9px;
 	}
-	#editbar .logged-in a:hover { color: white; }
+	#adminbar .logged-in a:hover { color: white; }
 
 	/* collapse switch */
-	#editbar .collapse-switch {
+	#adminbar .collapse-switch {
 		position: absolute; right: 0; top: 0; height: 40px; width: 60px;
 		background: url(sprites.png) no-repeat 2px 2px; cursor: pointer;
 	}
 
 	/* cr&md info */
-	#editbar .dates { background: #5a6f75; border-top: 1px solid #3e545b; overflow: auto;}
-	#editbar .dates li {
+	#adminbar .dates { background: #5a6f75; border-top: 1px solid #3e545b; overflow: auto;}
+	#adminbar .dates li {
 		display: block; padding: 5px 5px 5px 35px;
 		background: url(sprites.png) no-repeat; border-bottom: 1px solid #61767c; text-shadow: 0px 1px 0px #3e545b;
 	}
-	#editbar li.created { background-position: -63px -45px; color: #dbe9ee; }
-	#editbar li.modified { background-position: -63px -86px; color: white; font-weight: bold; margin-bottom: 10px; }
+	#adminbar li.created { background-position: -63px -45px; color: #dbe9ee; }
+	#adminbar li.modified { background-position: -63px -86px; color: white; font-weight: bold; margin-bottom: 10px; }
 
 	/* menu */
-	#editbar li a{
+	#adminbar li a{
 		display: block; padding: 5px 5px 5px 35px;
 		background: url(sprites.png) no-repeat; border-bottom: 1px solid #61767c; text-shadow: 0px 1px 0px #3e545b;
 	}
-		#editbar .menu .edit { background-position: -63px -125px; }
-		#editbar .menu .add { background-position: -63px -166px; }
-		#editbar .menu .pages { background-position: -63px -203px; }
-		#editbar .menu .logout { background-position: -63px -245px; }
-		#editbar .menu .edit { background-position: -63px -125px; }
+		#adminbar .menu .edit { background-position: -63px -125px; }
+		#adminbar .menu .add { background-position: -63px -166px; }
+		#adminbar .menu .pages { background-position: -63px -203px; }
+		#adminbar .menu .logout { background-position: -63px -245px; }
+		#adminbar .menu .edit { background-position: -63px -125px; }
 
-	#editbar .shortcuts{ display: none; left: 140px; width: 40px; position: relative; z-index: 998; }
-	#editbar .shortcuts li a{ padding: 20px; height: 20px; width: 20px; text-indent: -9999px; }
-		#editbar .shortcuts .add { background-position: 0 -140px; }
-		#editbar .shortcuts .pages { background-position: 0 -80px; }
-		#editbar .shortcuts .edit { background-position: 0 -200px; }
+	#adminbar .shortcuts{ display: none; left: 140px; width: 40px; position: relative; z-index: 998; }
+	#adminbar .shortcuts li a{ padding: 20px; height: 20px; width: 20px; text-indent: -9999px; }
+		#adminbar .shortcuts .add { background-position: 0 -140px; }
+		#adminbar .shortcuts .pages { background-position: 0 -80px; }
+		#adminbar .shortcuts .edit { background-position: 0 -200px; }
+		#adminbar .shortcuts .hide { background: #dbe9ee; height: 20px; padding: 2px 20px; font-weight: normal; text-indent: inherit; }
 
 
 

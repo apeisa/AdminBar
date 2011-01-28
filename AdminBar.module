@@ -2,201 +2,265 @@
 
 class AdminBar extends WireData implements Module, ConfigurableModule {
 
-        /**
-         * This is where you define some basic info about your module.
-         *
-         * See /wire/core/Module.php for definitions of all these.
-         *
-         */
-        public static function getModuleInfo() {
-                return array(
-                        'title' => 'Admin Bar',
-                        'summary' => 'Fast and easy in-page content editing, by apeisa & adamkiss',
-                        'href' => 'http://processwire.com/talk/index.php/topic,56.0.html',
-                        'version' => 100,
-                        'permanent' => false,
-                        'autoload' => true,
-                        'singular' => true,
-                        );
-        }
+	/**
+	 * This is where you define some basic info about your module.
+	 *
+	 * See /wire/core/Module.php for definitions of all these.
+	 *
+	 */
+	public static function getModuleInfo() {
+		return array(
+			'title' => 'Admin Bar',
+			'summary' => 'Fast and easy in-page content editing, by apeisa & adamkiss',
+			'href' => 'http://processwire.com/talk/index.php/topic,56.0.html',
+			'version' => 100,
+			'permanent' => false,
+			'autoload' => true,
+			'singular' => true,
+		);
+	}
 
-        public function __construct() {
-                $this->showModal = true;
-        }
+	/**
+	 * Default configuration for our module
+	 *
+	 * The point of putting this in it's own function is so that you don't have to specify
+	 * these defaults more than once.
+	 *
+	 * However, there is no requirement for you to do this (it was just my preferred style).
+	 * If you preferred, you could just check $this->showModal and if it was null, then you
+	 * would know it had not yet been configured (and likewise for the other vars).
+	 *
+	 */
+	static public function getDefaultData() {
+	   return array(
+		   'showModal' => 1,
+		   'initCollapsed' => 0,
+		   'administration' => wire('config')->adminRootPageID
+		   );
+	}
 
-        /**
-         * Initialize the module and setup hooks
-         *
-         * The init method of a module is called right after ProcessWire is bootstrapped, when all
-         * API vars are ready. Whereas the __construct() is called DURING bootstrap, so the init()
-         * method is a better place to attach hooks to API vars.
-         *
-         * In this method, we'll use an 'after' hook since we want to modify the output of the
-         * rendered page template.
-         *
-         * Note also that the 'Class::method' syntax means it hooks into ALL Page instances.
-         * The syntax for hooking to a single instance would be:
-         * $page->addHookAfter('render', $this, 'pageRender');
-         *
-         * Also note that there isn't actually a Page::render method, it was instead added by
-         * another module (wire/modules/PageRender.module). Not that it matters here, but just
-         * wanted to mention in case you look in the Page class and don't see a render method.
-         *
-         */
-        public function init() {
-                $this->pages->addHookAfter('save', $this, 'pageSave');
-                $this->addHookAfter('Page::render', $this, "pageRender");
+	/**
+	 * Populate the default config data
+	 *
+	 * ProcessWire will automatically overwrite it with anything the user has specifically configured.
+	 * This is done in construct() rather than init() because ProcessWire populates config data after
+	 * construct(), but before init().
+	 *
+	 */
+	public function __construct() {
+	   foreach(self::getDefaultData() as $key => $value) {
+		   $this->$key = $value;
+	   }
+	}
 
-                // hook before forms are rendered, so that we can modify the form's "action" attribute
-                $this->addHookBefore('InputfieldForm::render', $this, 'formRender');
+	/**
+	 * Initialize the module and setup hooks
+	 *
+	 * The init method of a module is called right after ProcessWire is bootstrapped, when all
+	 * API vars are ready. Whereas the __construct() is called DURING bootstrap, so the init()
+	 * method is a better place to attach hooks to API vars.
+	 *
+	 * In this method, we'll use an 'after' hook since we want to modify the output of the
+	 * rendered page template.
+	 *
+	 * Note also that the 'Class::method' syntax means it hooks into ALL Page instances.
+	 * The syntax for hooking to a single instance would be:
+	 * $page->addHookAfter('render', $this, 'pageRender');
+	 *
+	 * Also note that there isn't actually a Page::render method, it was instead added by
+	 * another module (wire/modules/PageRender.module). Not that it matters here, but just
+	 * wanted to mention in case you look in the Page class and don't see a render method.
+	 *
+	 */
+	public function init() {
+		$this->pages->addHookAfter('save', $this, 'pageSave');
+		$this->addHookAfter('Page::render', $this, "pageRender");
 
-                // hook before a redirect occurs, os we can modify the redirect URL
-                $this->session->addHookBefore('redirect', $this, 'sessionRedirect');
-        }
+		// hook before forms are rendered, so that we can modify the form's "action" attribute
+		$this->addHookBefore('InputfieldForm::render', $this, 'formRender');
 
-        static public function getModuleConfigInputfields(array $data) {
+		// hook before a redirect occurs, os we can modify the redirect URL
+		$this->session->addHookBefore('redirect', $this, 'sessionRedirect');
+	}
 
-                // this is a container for fields, basically like a fieldset
-                $fields = new InputfieldWrapper();
+	static public function getModuleConfigInputfields(array $data) {
 
-                // since this is a static function, we can't use $this->modules, so get them from the global wire() function
-                $modules = wire('modules');
+		// this is a container for fields, basically like a fieldset
+		$fields = new InputfieldWrapper();
 
-                // set some defaults if the values aren't already present
-                if(!isset($data['showModal'])) $data['showModal'] = 1; // default to checked
-                if(!isset($data['initCollapsed'])) $data['initCollapsed'] = 0; // default to unchecked
-                if(!isset($data['administration'])) $data['administration'] = wire('config')->adminRootPageID; // default to admin page
+		// since this is a static function, we can't use $this->modules, so get them from the global wire() function
+		$modules = wire('modules');
 
-                // showModal field
-                $field = $modules->get("InputfieldCheckbox");
-                $field->name = "showModal";
-                $field->label = "Show modal box?";
-                $field->description = "Whether edit opens modal box or goes to administration.";
-                $field->attr('checked', !empty($data['showModal']));
-                $fields->add($field);
+		// Populate $data with the default config, because if they've never configured this module before,
+		// the $data provided to this function will be empty. Or, if you add new config items in a new version,
+		// $data won't have it until they configure it. Best bet is to merge defaults with custom, where
+		// custom overwrites the defaults (array_merge).
+		$data = array_merge(self::getDefaultData(), $data);
 
-                // initCollapsed field
-                $field = $modules->get("InputfieldCheckbox");
-                $field->name = "initCollapsed";
-                $field->label = "Init collapsed?";
-                $field->attr('checked', !empty($data['initCollapsed']));
-                $fields->add($field);
+		// showModal field
+		$field = $modules->get("InputfieldCheckbox");
+		$field->name = "showModal";
+		$field->label = "Show modal box?";
+		$field->description = "Whether edit opens modal box or goes to administration.";
+		$field->value = 1; // providing a "checked" value for the checkbox is necessary
+		$field->attr('checked', empty($data['showModal']) ? '' : 'checked');
+		$fields->add($field);
 
-                // administration field
-                $field = $modules->get("InputfieldPageListSelect");
-                $field->name = "administration";
-                $field->label = "Where to go after clicking on 'administration'";
-                $field->value = $data['administration'];
-                $fields->add($field);
+		// initCollapsed field
+		$field = $modules->get("InputfieldCheckbox");
+		$field->name = "initCollapsed";
+		$field->label = "Init collapsed?";
+		$field->value = 1;
+		$field->attr('checked', empty($data['initCollapsed']) ? '' : 'checked');
+		$fields->add($field);
 
-                return $fields;
-        }
+		// administration field
+		$field = $modules->get("InputfieldPageListSelect");
+		$field->name = "administration";
+		$field->label = "Where to go after clicking on 'administration'";
+		$field->value = $data['administration'];
+		$fields->add($field);
 
-        /**
-         * Hook called when a page is rendered
-         *
-         * The method name used here does not matter, it just has to be consistent with the name you provided
-         * when creating the hook.
-         *
-         * This method is given an $event object of type HookEvent. To see what's in that, see this file:
-         * /wire/core/HookEvent.php (it's very short and simple)
-         *
-         */
-        public function pageRender($event) {
+		return $fields;
+	}
 
-                // $event->object always has the object instance that resulted in this call
-                $page = $event->object;
+	/**
+	 * Hook called when a page is rendered
+	 *
+	 * The method name used here does not matter, it just has to be consistent with the name you provided
+	 * when creating the hook.
+	 *
+	 * This method is given an $event object of type HookEvent. To see what's in that, see this file:
+	 * /wire/core/HookEvent.php (it's very short and simple)
+	 *
+	 */
+	public function pageRender($event) {
 
-                // If we have saved page, we are in admin in modal, then we make js-redirect and break out of modal
-                if ($this->session->pageSaved && $page->template == 'admin' && $this->input->get->modal) {
-                  echo("<script language=\"javascript\">");
-                  echo("top.location.href = \"{$this->config->urls->root}{$this->session->pageSaved}\";");
-                  echo("</script>");
-                  die();
-                } elseif ($page->template == 'admin') {
-                  $this->session->remove('pageSaved');
-                }
+		// $event->object always has the object instance that resulted in this call
+		$page = $event->object;
 
-                // if the page isn't editable, or if it's using the admin template, abort.
-                if(!$page->editable() || $page->template == 'admin') return;
+		// If we have saved page, admin page and in modal,
+		// then we make js-redirect and break out of modal (there seems to be no other way than js)
+		if ($this->session->pageSaved && $page->template == 'admin' && $this->input->get->modal) {
+		  echo("<script language=\"javascript\">");
+		  echo("top.location.href = \"{$this->config->urls->root}{$this->session->pageSaved}\";");
+		  echo("</script>");
+		  die();
+		}
+		// If we are in admin, we want to delete our session var
+		elseif ($page->template == 'admin') {
+		  $this->session->remove('pageSaved');
+		}
 
-                // find the location of this module for linking css and js files
-                $url = $this->config->urls->AdminBar . "AdminBar";
+		// if the page isn't editable, or if it's using the admin template, abort.
+		if(!$page->editable() || $page->template == 'admin') return;
 
-                // the css and js links we're going to add
-                $out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css' />" .
-                        "\n\t<script type='text/javascript' src='$url.js'></script>" .
-                        "\n</head>";
+		// find the location of this module for linking css and js files
+		$url = $this->config->urls->AdminBar . "AdminBar";
 
-                // modify the value returned by $page->render() to include our css and js files
-                $event->return = str_ireplace('</head>', $out, $event->return);
+		// the css and js links we're going to add
+		$out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css' />" .
+				"\n\t<script type='text/javascript' src='$url.js'></script>" .
+				"\n</head>";
 
-                $out  = "<div id='editbar'>";
-                $out .=   "<div class='main collapsed'>";
-                $out .=     "<div class='logged-in'><a href='#'>{$this->user->name}</a></div>";
-                $out .=     "<ul class='dates'>";
-                $out .=       "<li class='created' title='Created'>{$page->createdUser} | ". date('d.m.y H:i', $page->created) . "</li>";
-                $out .=       "<li class='modified' title='Modified'>{$page->modifiedUser} | ". date('d.m.y H:i', $page->modified) . "</li>";
-                $out .=     "</ul>";
-                $out .=     "<ul class='menu'>";
-                if (isset($this->showModal)) {
-                  $out .=     "<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}&modal=true' class='modal edit'>Edit this page</a></li>";
-                } else {
-                  $out .=     "<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}' class='edit'>Edit this page</a></li>";
-                }
-                $out .=       "<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>";
-                $out .=       "<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>";
-                $out .=     "</ul>";
-                $out .=   "</div>";
-                $out .=   "<ul class='shortcuts'>";
-                //$out .=     "<li><a href='#' class='pages'>Pages tree</a></li>";
-                //$out .=     "<li><a href='#' class='add'>Add child</a></li>";
-                $out .=     "<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}&modal=true' class='modal edit'>Edit this page</a></li>";
-                $out .=   "</ul>";
-                $out .= "</div>";
-                if ($this->session->pageSaved) {
-                  $out .= "<div id='ab-pagesaved-cont'><div id='ab-pagesaved'>Page {$this->session->pageSaved} saved succesfully</div></div>";
-                  $this->session->remove('pageSaved');
-                } else {
-                  $this->session->remove('pageSaved');
-                }
-                $out .= "</body>";
+		// modify the value returned by $page->render() to include our css and js files
+		$event->return = str_ireplace('</head>', $out, $event->return);
 
-                // And then we add needed markup
-                $event->return = str_ireplace('</body>', $out, $event->return);
-        }
+		// If settings for showModal is checked, then we need modalClass to open
+		// it in modal (js) and modalGet to show modal version of admin
+		if ($this->showModal) {
+			$modalClass = 'modal';
+			$modalGet = '&modal=true';
+		} else {
+			$modalClass = '';
+			$modalGet = '';
+		}
 
-        public function pageSave($event) {
-                $page = $event->arguments[0];
-                $this->session->pageSaved = "{$page->path}";
-        }
+		if ($this->initCollapsed) {
+			$collpsedClass = 'collapsed';
+		} else {
+			$collpsedClass = '';
+		}
 
-        /**
-         * Hook to take place before forms are rendered
-         *
-         * We check if there is a 'modal' get var set, and if so, we add it to the form's action attribute
-         *
-         */
-        public function formRender($event) {
-                if(!$this->input->get->modal) return;
-                $form = $event->object;
-                $action = $form->attr('action');
-                $action .= (strpos($action, '?') !== false ? '&' : '?') . "modal=1";
-                $form->attr('action', $action);
-        }
+		$dateCreated = date('d.m.y H:i', $page->created);
+		$dateModified = date('d.m.y H:i', $page->modified);
 
-       /**
-         * Hook to take place right before a redirect occurs
-         *
-         * We intercept the redirect URL and modify it to add 'modal=1' to the query string
-         *
-         */
-        public function sessionRedirect($event) {
-                if(!$this->page || $this->page->template != 'admin') return;
-                if(!$this->input->get->modal) return;
-                $url = $event->arguments(0);
-                if(preg_match('/[?&]modal=/', $url)) return;
-                $url .= (count($this->input->get) ? '&' : '?') . "modal=1";
-                $event->arguments(0, $url);
-        }
+		// Here we create markup needed by AdminBar.
+		$out  = <<<OUT
+<div id='adminbar'>
+<div class='main {$collpsedClass}'>
+<div class='logged-in'><a href='#'>{$this->user->name}</a></div>
+  <ul class='dates'>
+	<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
+	<li class='modified' title='Modified'>{$page->modifiedUser} | {$dateModified}</li>
+  </ul>
+  <ul class='menu'>
+	<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
+	<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>
+	<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>
+  </ul>
+</div>
+<ul class='shortcuts'>
+  <li><a href='{$this->config->urls->admin}page/' class='pages'>Pages tree</a></li>
+  <li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
+  <li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
+  <li><a href='#' class='hide'>Hide</a></li>
+</ul>
+</div>
+</div>
+OUT;
+		// Saved page through modal, we notify the user that page was saved
+		if ($this->session->pageSaved) {
+			$out .= "<div id='ab-pagesaved-cont'><div id='ab-pagesaved'>Page {$this->session->pageSaved} saved succesfully</div></div>";
+			$this->session->remove('pageSaved');
+		} else {
+			$this->session->remove('pageSaved');
+		}
+		$out .= "</body>";
+
+		// And finally we add AdminBar markup to end of the page source
+		$event->return = str_ireplace('</body>', $out, $event->return);
+	}
+
+
+	/**
+	 * Hook to take place after page is saved (edit & new page)
+	 *
+	 */
+	public function pageSave($event) {
+		$page = $event->arguments[0];
+
+		// If creating new page, then we do not add pageSaved session var (this also prevents redirect and keeps modal alive)
+		if (!$page->is(Page::statusUnpublished))
+			$this->session->pageSaved = "{$page->path}";
+	}
+
+	/**
+	 * Hook to take place before forms are rendered
+	 *
+	 * We check if there is a 'modal' get var set, and if so, we add it to the form's action attribute
+	 *
+	 */
+	public function formRender($event) {
+		if(!$this->input->get->modal) return;
+		$form = $event->object;
+		$action = $form->attr('action');
+		$action .= (strpos($action, '?') !== false ? '&' : '?') . "modal=1";
+		$form->attr('action', $action);
+	}
+
+   /**
+	 * Hook to take place right before a redirect occurs
+	 *
+	 * We intercept the redirect URL and modify it to add 'modal=1' to the query string
+	 *
+	 */
+	public function sessionRedirect($event) {
+		if(!$this->page || $this->page->template != 'admin') return;
+		if(!$this->input->get->modal) return;
+		$url = $event->arguments(0);
+		if(preg_match('/[?&]modal=/', $url)) return;
+		$url .= (count($this->input->get) ? '&' : '?') . "modal=1";
+		$event->arguments(0, $url);
+	}
 }

@@ -5,24 +5,24 @@ jQuery(document).ready(function($) {
 	$('body').addClass('editbar-jsready');
 
 	//prepare variable shortcuts
-	var $e 		    = $('#editbar'),
-		$m		    = $e.find('.main'),
+	var $a 		    = $('#adminbar'),
+		$m		    = $a.find('.main'),
 		$s		    = $('<div class="collapse-switch"></div>').appendTo($m.find('.logged-in')),
-		$sc		    = $e.find('ul.shortcuts:eq(0)'),
-        $ml         = $('<div id="ab-modal" />'),
-        $mlLink     = $e.find('.modal'),
-        $mlBg       = $('<div id="ab-modal-bg" />');
+		$sc		    = $a.find('ul.shortcuts:eq(0)'),
+        $ml         = $('<div id="ab-modal" />'), //
+        $mlLink     = $a.find('.modal'), // Links that should open in modal
+        $mlBg       = $('<div id="ab-modal-bg" />'); // Modal bg
 
 	//various variables to save states, values, i.e.
-	var eb_top = parseInt($e.css('top')),
-		eb_width = parseInt($e.css('width')),
+	var eb_top = parseInt($a.css('top')),
+		eb_width = parseInt($a.css('width')),
 		eb_animate,
         mlGenerated  = false,
 		main_height = $m.height();
 
 	//prepare animating & fx functions
 	function follow(){
-		$e.animate({top: ($(window).scrollTop()+eb_top)+'px' }, 350);
+		$a.animate({top: ($(window).scrollTop()+eb_top)+'px' }, 350);
 	}
 
 	function showShortcuts(){
@@ -33,11 +33,11 @@ jQuery(document).ready(function($) {
 		$m.toggleClass('collapsed');
 		if ($m.hasClass('collapsed')){
 			$m.stop().animate({ height: '39px'},250);
-			$e.stop().animate({ left: '-'+(eb_width-60)+'px'},250, function(){showShortcuts();});
+			$a.stop().animate({ left: '-'+(eb_width-60)+'px'},250, function(){showShortcuts();});
 		}else{
 			$sc.stop().animate({opacity:0},100);
 			$m.stop().animate({ height: main_height+'px'},250);
-			$e.stop().animate({ left: '0px'},250);
+			$a.stop().animate({ left: '0px'},250);
 		}
 	}
 
@@ -46,7 +46,7 @@ jQuery(document).ready(function($) {
 	  .hover(function(){$(this).animate({opacity: 1},150);},
 			function(){$(this).animate({opacity: 0},150);});
 
-	$e.css({ position: 'absolute' })
+	$a.css({ position: 'absolute' })
 	$(window).bind('scroll', function(){
 		clearTimeout(eb_animate);
 		eb_animate = setTimeout(function(){ follow(); }, 250);
@@ -60,6 +60,11 @@ jQuery(document).ready(function($) {
 		$m.removeClass('collapsed');
 		collapse();
 	}
+
+	$sc.find('.hide').click(function(e){
+		e.preventDefault();
+		$a.hide('fast');
+	});
 
   $mlBg.
   bind('open', function(e) {
