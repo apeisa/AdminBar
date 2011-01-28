@@ -17,3 +17,7 @@ Just put all files into /site/modules/AdminBar/ folder, then go admin -> modules
 -Webkit family (Chrome, Safari)
 -Opera (?)
 -Since this is admin only module, I see no reason to support IE6
+
+// LICENCE
+GNU/GPL v2
+GNU GENERAL PUBLIC LICENSE
