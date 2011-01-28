@@ -142,10 +142,11 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		// If we have saved page, admin page and in modal,
 		// then we make js-redirect and break out of modal (there seems to be no other way than js)
 		if ($this->session->pageSaved && $page->template == 'admin' && $this->input->get->modal) {
-		  echo("<script language=\"javascript\">");
-		  echo("top.location.href = \"{$this->config->urls->root}{$this->session->pageSaved}\";");
-		  echo("</script>");
-		  die();
+			$redirect_url = rtrim($this->config->urls->root, '/') . $this->session->pageSaved;
+			echo("<script language=\"javascript\">");
+			echo("top.location.href = \"{$redirect_url}\";");
+			echo("</script>");
+			die();
 		}
 		// If we are in admin, we want to delete our session var
 		elseif ($page->template == 'admin') {
