@@ -1,5 +1,5 @@
 /*
-	Editbar preview
+	AdminBar
 
 	colors:
 	- dark blue: #3e545b
@@ -74,34 +74,7 @@
 		#adminbar .shortcuts .hide { background: #dbe9ee; height: 20px; padding: 2px 20px; font-weight: normal; text-indent: inherit; }
 
 
-
-
-.ab-modal-bg-open {
-  width: 100%;
-  z-index: 998;
-  position: absolute;
-  display: block;
-  background: rgba(0,0,0,0.8);
-}
-
-.ab-modal-bg-closed {
-  display: none;
-}
-
-#ab-modal {
-  position: absolute;
-  z-index: 999;
-  top: 50px;
-  left: 6%;
-  right: 6%;
-  border: 10px solid #dbe9ee;
-  background: white;
-}
-
-.ab-modal-closed {
-  display: none;
-}
-
+/* PAGESAVE NOTIFICATION STYLES */
 #ab-pagesaved-cont {
   position: absolute;
   width: 100%;
@@ -118,4 +91,32 @@
   background: #dbe9ee;
   border: 1px solid #3e545b;
   border-top: none;
+}
+
+
+/* MODAL STYLES */
+#ab-modal-bg {
+  width: 100%;
+  z-index: 998;
+  position: absolute;
+  background: rgba(0,0,0,0.8);
+}
+
+.ab-modal-bg-closed {
+  display: none;
+}
+
+#ab-modal {
+  position: absolute;
+  z-index: 999;
+  top: 50px;
+  left: 10%;
+  right: 10%;
+  border: 10px solid #dbe9ee;
+  text-align: center;
+  background: white;
+}
+
+.ab-modal-closed {
+  display: none;
 }
