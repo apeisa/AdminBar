@@ -153,9 +153,16 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		  $this->session->remove('pageSaved');
 		}
 
-		// We want to hide "view" button from modal admin view
+		// We want to remove "view" and "children" buttons from modal admin view
 		if($page->template == 'admin' && $this->input->get->modal) {
-			$out = "\n\t<style>#_ProcessPageEditView {display: none;}</style></head>";
+			$out = <<<OUT
+<script>
+jQuery(document).ready(function($) {
+	$('#PageEditTabs').find('#_ProcessPageEditView').parent().remove();
+	$('#PageEditTabs').find('#_ProcessPageEditChildren').parent().remove();
+});
+</script>
+OUT;
 			$event->return = str_ireplace('</head>', $out, $event->return);
 		}
 
