@@ -1,7 +1,7 @@
 
 jQuery(document).ready(function($) {
 
-  //prepare all js-enhanced functions
+	//prepare all js-enhanced functions
 	$('body').addClass('editbar-jsready');
 
 	//prepare variable shortcuts
@@ -71,23 +71,22 @@ jQuery(document).ready(function($) {
 	bind('open', function(e) {
 		var $this = $(this);
 		$ml.removeClass('ab-modal-closed').addClass('ab-modal-open');
-		$this.removeClass('ab-modal-bg-closed').addClass('ab-modal-bg-open');
+		$this.removeClass('ab-modal-bg-closed');
 		$this.css('height', $(document).height());
 	}).
 	bind('close', function(e) {
 		var $this = $(this);
-		if ($('#notices', frames['ab_modal_iframe'].document).length > 0) {
-		  window.location.reload();
-		}
-		$this.removeClass('ab-modal-bg-open').addClass('ab-modal-bg-closed');
+		$this.addClass('ab-modal-bg-closed');
 	}).
 	bind('click', function(e) {
 		var $this = $(this);
 		$this.trigger('close');
 	});
 
+	// If there is pagesaved notification, hide it after a moment
 	$('#ab-pagesaved-cont').delay(2400).slideUp("slow");
 
+	// Click event for links that are supposed to open in modal
 	$mlLink.click(function(e) {
 		e.preventDefault();
 
@@ -95,8 +94,6 @@ jQuery(document).ready(function($) {
 		if (!$m.hasClass('collapsed')) {
 			collapse();
 		}
-
-		$(this).text('Continue editing');
 
 		// If modal has been generated at least once, but we now click different
 		// action than before, then we will remove current iFrame and re-create it later
