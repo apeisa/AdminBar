@@ -18,6 +18,6 @@ Just put all files into /site/modules/AdminBar/ folder, then go admin -> modules
 -Opera (?)
 -Since this is admin only module, I see no reason to support IE6
 
-// LICENCE
+// LICENSE
 GNU/GPL v2
 GNU GENERAL PUBLIC LICENSE
