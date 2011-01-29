@@ -197,26 +197,26 @@ OUT;
 
 		// Here we create markup needed by AdminBar.
 		$out  = <<<OUT
-<div id='adminbar'>
-<div class='main {$collpsedClass}'>
-<div class='logged-in'><a href='{$this->config->urls->admin}access/user/edit?id={$this->user->id}'>{$this->user->name}</a></div>
-  <ul class='dates'>
-	<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
-	<li class='modified' title='Modified'>{$page->modifiedUser} | {$dateModified}</li>
-  </ul>
-  <ul class='menu'>
-	<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>
-	<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>
-  </ul>
-</div>
-<ul class='shortcuts'>
-  <li><a href='{$this->config->urls->admin}page/' class='pages'>Pages tree</a></li>
-  <li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
-  <li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
-  <li><a href='#' class='hide'>Hide</a></li>
-</ul>
-</div>
-</div>
+	<div id='adminbar'>
+		<div class='main {$collpsedClass}'>
+		<div class='logged-in'><a href='{$this->config->urls->admin}access/user/edit?id={$this->user->id}'>{$this->user->name}</a></div>
+			<ul class='dates'>
+				<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
+				<li class='modified' title='Modified'>{$page->modifiedUser} | {$dateModified}</li>
+			</ul>
+			<ul class='menu'>
+				<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>
+				<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>
+			</ul>
+		</div>
+		<ul class='shortcuts'>
+			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
+			<li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
+			<li><a href='{$this->config->urls->admin}page/' class='pages'>Pages tree</a></li>
+			<li><a href='#' class='hide'>Hide</a></li>
+		</ul>
+		</div>
+	</div>
 OUT;
 		// Saved page through modal, we notify the user that page was saved
 		if ($this->session->pageSaved) {
@@ -225,7 +225,7 @@ OUT;
 		} else {
 			$this->session->remove('pageSaved');
 		}
-		$out .= "</body>";
+		$out .= "\n</body>";
 
 		// And finally we add AdminBar markup to end of the page source
 		$event->return = str_ireplace('</body>', $out, $event->return);
