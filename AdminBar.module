@@ -76,6 +76,9 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		$this->pages->addHookAfter('save', $this, 'pageSave');
 		$this->addHookAfter('Page::render', $this, "pageRender");
 
+		// We use this hook to change the template file for sidemap
+		$this->addHookBefore('Page::render', $this, 'beforePageRender');
+
 		// hook before forms are rendered, so that we can modify the form's "action" attribute
 		$this->addHookBefore('InputfieldForm::render', $this, 'formRender');
 
@@ -167,7 +170,9 @@ OUT;
 		}
 
 		// if the page isn't editable, or if it's using the admin template, abort.
-		if(!$page->editable() || $page->template == 'admin') return;
+		if(!$page->editable() || $page->template == 'admin' || $page->template == 'adminbar') return;
+
+		$this->_createAdminBarPages();
 
 		// find the location of this module for linking css and js files
 		$url = $this->config->urls->AdminBar . "AdminBar";
@@ -176,6 +181,7 @@ OUT;
 		$out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css' />" .
 				"\n\t<script type='text/javascript' src='$url.js'></script>" .
 				"\n</head>";
+
 
 		// modify the value returned by $page->render() to include our css and js files
 		$event->return = str_ireplace('</head>', $out, $event->return);
@@ -198,7 +204,7 @@ OUT;
 		// Here we create markup needed by AdminBar.
 		$out  = <<<OUT
 	<div id='adminbar'>
-		<div class='main {$collpsedClass}'>
+		<div class='main firstTime {$collpsedClass}'>
 		<div class='logged-in'><a href='{$this->config->urls->admin}access/user/edit?id={$this->user->id}'>{$this->user->name}</a></div>
 			<ul class='dates'>
 				<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
@@ -212,7 +218,7 @@ OUT;
 		<ul class='shortcuts'>
 			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
 			<li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
-			<li><a href='{$this->config->urls->admin}page/' class='pages'>Pages tree</a></li>
+			<li><a href='{$this->config->urls->admin}adminbar/?curPageId={$this->page->id}' class='modal pages'>Pages tree</a></li>
 			<li><a href='#' class='hide'>Hide</a></li>
 		</ul>
 		</div>
@@ -271,5 +277,67 @@ OUT;
 		if(preg_match('/[?&]modal=/', $url)) return;
 		$url .= (count($this->input->get) ? '&' : '?') . "modal=1";
 		$event->arguments(0, $url);
+	}
+
+	// We change the filepath of adminbar template file
+	public function beforePageRender($event) {
+		$page = $event->object;
+		if($page->template == 'adminbar') {
+			$page->template->filename = $this->config->paths->AdminBar . "templates/sitemap.php";
+		}
+	}
+
+	// Native ab-modalpages, at least for sitemap
+	private function _createAdminBarPages() {
+		$abName = "adminbar";
+		$abFieldGroup = $this->fieldgroups->get($abName);
+		$abTemplate = $this->templates->get($abName);
+		$abPage = $this->pages->get("/processwire/{$abName}/"); // TODO: How to remove hardcoding admin url?? $this->config->urls->admin doesn't seem to work?
+
+		if(is_null($abFieldGroup))
+			$abFieldGroup = $this->_createAdminBarFieldGroup($abName);
+
+		if(is_null($abTemplate))
+			$abTemplate = $this->_createAdminBarTemplate($abName, $abFieldGroup);
+
+		if(!$abPage->id)
+			$this->_createAdminBarPage($abName, $abTemplate);
+	}
+
+	private function _createAdminBarFieldGroup($fieldGroupName) {
+		$abFieldGroup = new Fieldgroup();
+		$abFieldGroup->name = $fieldGroupName;
+		$abFieldGroup->add("title");
+		$abFieldGroup->save();
+		return $abFieldGroup;
+	}
+
+	private function _createAdminBarTemplate($templateName, $abFieldGroup) {
+		$abTemplate = new Template();
+		$abTemplate->name = $templateName;
+		$abTemplate->setFieldgroup($abFieldGroup);
+		$abTemplate->save();
+		return $abTemplate;
+	}
+
+	private function _createAdminBarPage($abName, $abTemplate) {
+
+		// create /adminbar/ page under admin
+		$abPage = new Page();
+		$abPage->template = $abTemplate;
+		$abPage->parent = $this->pages->get("/processwire/"); // TODO: remove url hardcoding
+		$abPage->title = $abName;
+		$abPage->name = $abName;
+		$abPage->status = 1031; // hidden & locked
+		$abPage->save();
+
+		// after that create /adminbar/sitemap/
+		$abSitemapPage = new Page();
+		$abSitemapPage->template = $abTemplate;
+		$abSitemapPage->parent = $abPage;
+		$abSitemapPage->title = 'sitemap';
+		$abSitemapPage->name = 'sitemap';
+		$abSitemapPage->status = 1031;
+		return $abSitemapPage->save();
 	}
 }

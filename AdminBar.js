@@ -26,14 +26,20 @@ jQuery(document).ready(function($) {
 	}
 
 	function showShortcuts(){
-		$sc.stop().animate({opacity:1},250);
+		$sc.stop().css({opacity:1});
 	}
 
 	function collapse(){
 		$m.toggleClass('collapsed');
 		if ($m.hasClass('collapsed')){
-			$m.stop().animate({ height: '39px'},250);
-			$a.stop().animate({ left: '-'+(eb_width-60)+'px'},250, function(){showShortcuts();});
+			if($m.hasClass('firstTime')) {
+				var animTime = 0;
+				$m.removeClass('firstTime');
+			} else {
+				var animTime = 250
+			};
+			$m.stop().animate({ height: '39px'},animTime);
+			$a.stop().animate({ left: '-'+(eb_width-60)+'px'},animTime, function(){showShortcuts();});
 		}else{
 			$sc.stop().animate({opacity:0},100);
 			$m.stop().animate({ height: main_height+'px'},250);
