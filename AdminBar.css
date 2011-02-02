@@ -8,7 +8,8 @@
 */
 
 #adminbar{
-	position: fixed; left: 0px; top: 100px; width: 200px;
+	position: fixed; left: 0px; top: 100px; width: 60px;
+	background: #dbe9ee;
 	font: normal 12px/20px "Lucida Grande", Tahoma, sans-serif;
 }
 	#adminbar ul { list-style: none; }
@@ -25,14 +26,14 @@
 
 	/* main box (the one that holds data when NOT collapsed) */
 	#adminbar .main {
-		overflow: hidden; position: relative; z-index: 999;
+		overflow: hidden; left: -200px; width: 259px; position: absolute; z-index: 999;
 		background: #dbe9ee; border-bottom: 1px solid #3e545b; border-right: 1px solid #3e545b;
 	}
 
 	/* logged in user bar */
 	#adminbar .logged-in {
 		height: 20px; padding: 10px 10px 10px 5px;
-		background: #3e545b url(sprites.png) no-repeat 140px -40px; border-bottom: 1px solid #4c6168;
+		background: #3e545b url(sprites.png) no-repeat 200px -40px; border-bottom: 1px solid #4c6168;
 	}
 	#adminbar .logged-in a {
 		color: #dbe9ee; display: block; font-weight: bold; height: 20px; text-shadow: 0px 1px 1px rgba(0,0,0,.4);
@@ -42,7 +43,7 @@
 
 	/* collapse switch */
 	#adminbar .collapse-switch {
-		position: absolute; right: 0; top: 0; height: 40px; width: 60px;
+		position: absolute; right: 0; top: 0; height: 40px; width: 60px; opacity: 0;
 		background: url(sprites.png) no-repeat 2px 2px; cursor: pointer;
 	}
 
@@ -66,7 +67,7 @@
 		#adminbar .menu .logout { background-position: -63px -245px; }
 		#adminbar .menu .edit { background-position: -63px -125px; }
 
-	#adminbar .shortcuts{ display: none; left: 140px; width: 40px; position: relative; z-index: 998; }
+	#adminbar .shortcuts{ left: 0px; top: 40px; width: 40px; position: absolute; z-index: 999; }
 	#adminbar .shortcuts li a{ padding: 20px; height: 20px; width: 20px; text-indent: -9999px; }
 		#adminbar .shortcuts .add { background-position: 0 -140px; }
 		#adminbar .shortcuts .pages { background-position: 0 -80px; }

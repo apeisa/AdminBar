@@ -6,50 +6,30 @@ jQuery(document).ready(function($) {
 
 	//prepare variable shortcuts
 	var $a			= $('#adminbar'),
-			$m			= $a.find('.main'),
-			$s			= $('<div class="collapse-switch"></div>').appendTo($m.find('.logged-in')),
-			$sc			= $a.find('ul.shortcuts:eq(0)'),
-      $ml         = $('<div id="ab-modal" />'), //
-      $mlLink		= $a.find('.modal'), // Links that should open in modal
-      $mlBg		= $('<div id="ab-modal-bg" />'); // Modal bg
+		$m			= $a.find('.main'),
+		$s			= $('<div class="collapse-switch"></div>').appendTo($m),
+		$sc			= $a.find('ul.shortcuts:eq(0)'),
+		$ml         = $('<div id="ab-modal" />'), //
+		$mlLink		= $a.find('.modal'), // Links that should open in modal
+		$mlBg		= $('<div id="ab-modal-bg" />'); // Modal bg
 
-	//various variables to save states, values, i.e.
-	var eb_width = parseInt($a.css('width')),
-			mlGenerated  = false,
-			main_height = $m.height();
-
-	//prepare animating & fx functions
-	function showShortcuts(){
-		$sc.stop().animate({opacity:1});
-	}
-
-	function collapse(){
-		$m.toggleClass('collapsed');
-		if ($m.hasClass('collapsed')){
-			$m.stop().animate({ height: '39px'},250);
-			$a.stop().animate({ left: '-'+(eb_width-60)+'px'},250, function(){showShortcuts();});
+	// Changes between shortcuts and "main" window
+	function flip(){
+		if($m.hasClass('collapsed')){
+			$m.animate({left: '0px'},250);
+			$sc.hide();
 		}else{
-			$sc.stop().animate({opacity:0},100);
-			$m.stop().animate({ height: main_height+'px'},250);
-			$a.stop().animate({ left: '0px'},250);
+			$m.animate({left: '-200px'},250, function(){$sc.show();});
 		}
+		$m.toggleClass('collapsed');
 	}
 
 	//CSS manipulation and FX/event handlers
 	//hide 'collapse' icon overlay and set hover
-	$s.css({opacity: 0})
-		.hover(function(){$(this).animate({opacity: 1},150);},
+	$s.hover(function(){$(this).animate({opacity: 1},150);},
 			function(){$(this).animate({opacity: 0},150);});
 
-	//hide shortcuts
-	$sc.css({display:'block', opacity: 0});
-	if ($m.hasClass('collapsed')) { //if collapsed
-		$m.css({ height: '39px' });
-		$a.css({ left: '-'+(eb_width-60)+'px' });
-		$sc.css({opacity: 1});
-	}
-
-	$s.click(function(){ collapse(); });
+	$s.click(function(){ flip(); });
 
 	$sc.find('.hide').click(function(e){
 		e.preventDefault();
@@ -79,8 +59,8 @@ jQuery(document).ready(function($) {
 	// Click event for links that are supposed to open in modal
 	$mlLink.click(function(e) {
 		e.preventDefault();
+		$(document).scrollTop(0);
 
-		$(document).scrollTop(0)
 		if (!$m.hasClass('collapsed')) {
 			collapse();
 		}
@@ -101,7 +81,7 @@ jQuery(document).ready(function($) {
 			// We save the class of the link as the modal active state (modal edit or modal add)
 			$ml.data('activeState', e.target.className);
 
-			// Create iFrame for admin page
+			// Create iFrame
 			$iframe = $('<iframe name="ab_modal_iframe" id="ab_modal_iframe" frameborder="0" src="'+ $(this).attr('href') +'"></iframe>')
 			.css('width', '100%')
 			.css('height', $(window).height() - 120)

@@ -33,9 +33,7 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 	 */
 	static public function getDefaultData() {
 	   return array(
-		   'showModal' => 1,
-		   'initCollapsed' => 0,
-		   'administration' => wire('config')->adminRootPageID
+		   'showModal' => 1
 		   );
 	}
 
@@ -103,25 +101,10 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		// showModal field
 		$field = $modules->get("InputfieldCheckbox");
 		$field->name = "showModal";
-		$field->label = "Show modal box?";
-		$field->description = "Whether edit opens modal box or goes to administration.";
+		$field->label = "Use modal window";
+		$field->description = "Whether open pages in modal (overlay) window or goes to traditional administration.";
 		$field->value = 1; // providing a "checked" value for the checkbox is necessary
 		$field->attr('checked', empty($data['showModal']) ? '' : 'checked');
-		$fields->add($field);
-
-		// initCollapsed field
-		$field = $modules->get("InputfieldCheckbox");
-		$field->name = "initCollapsed";
-		$field->label = "Init collapsed?";
-		$field->value = 1;
-		$field->attr('checked', empty($data['initCollapsed']) ? '' : 'checked');
-		$fields->add($field);
-
-		// administration field
-		$field = $modules->get("InputfieldPageListSelect");
-		$field->name = "administration";
-		$field->label = "Where to go after clicking on 'administration'";
-		$field->value = $data['administration'];
 		$fields->add($field);
 
 		return $fields;
@@ -196,24 +179,22 @@ OUT;
 			$modalGet = '';
 		}
 
-		if ($this->initCollapsed) { $collpsedClass = 'collapsed'; } else { $collpsedClass = ''; }
-
 		$dateCreated = date('d.m.y H:i', $page->created);
 		$dateModified = date('d.m.y H:i', $page->modified);
 
 		// Here we create markup needed by AdminBar.
 		$out  = <<<OUT
 	<div id='adminbar'>
-		<div class='main {$collpsedClass}'>
-		<div class='logged-in'><a href='{$this->config->urls->admin}access/user/edit?id={$this->user->id}'>{$this->user->name}</a></div>
-			<ul class='dates'>
-				<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
-				<li class='modified' title='Modified'>{$page->modifiedUser} | {$dateModified}</li>
-			</ul>
-			<ul class='menu'>
-				<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>
-				<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>
-			</ul>
+		<div class='main collapsed'>
+			<div class='logged-in'><a href='{$this->config->urls->admin}access/user/edit?id={$this->user->id}'>{$this->user->name}</a></div>
+				<ul class='dates'>
+					<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
+					<li class='modified' title='Modified'>{$page->modifiedUser} | {$dateModified}</li>
+				</ul>
+				<ul class='menu'>
+					<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>
+					<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>
+				</ul>
 		</div>
 		<ul class='shortcuts'>
 			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
@@ -221,7 +202,6 @@ OUT;
 			<li><a href='{$this->config->urls->admin}adminbar/?curPageId={$this->page->id}' class='{$modalClass} pages'>Pages tree</a></li>
 			<li><a href='#' class='hide'>Hide</a></li>
 		</ul>
-		</div>
 	</div>
 OUT;
 		// Saved page through modal, we notify the user that page was saved
