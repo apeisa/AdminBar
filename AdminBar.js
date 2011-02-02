@@ -6,40 +6,28 @@ jQuery(document).ready(function($) {
 
 	//prepare variable shortcuts
 	var $a			= $('#adminbar'),
-		$m			= $a.find('.main'),
-		$s			= $('<div class="collapse-switch"></div>').appendTo($m.find('.logged-in')),
-		$sc			= $a.find('ul.shortcuts:eq(0)'),
-        $ml         = $('<div id="ab-modal" />'), //
-        $mlLink		= $a.find('.modal'), // Links that should open in modal
-        $mlBg		= $('<div id="ab-modal-bg" />'); // Modal bg
+			$m			= $a.find('.main'),
+			$s			= $('<div class="collapse-switch"></div>').appendTo($m.find('.logged-in')),
+			$sc			= $a.find('ul.shortcuts:eq(0)'),
+      $ml         = $('<div id="ab-modal" />'), //
+      $mlLink		= $a.find('.modal'), // Links that should open in modal
+      $mlBg		= $('<div id="ab-modal-bg" />'); // Modal bg
 
 	//various variables to save states, values, i.e.
-	var eb_top = parseInt($a.css('top')),
-		eb_width = parseInt($a.css('width')),
-		eb_animate,
-        mlGenerated  = false,
-		main_height = $m.height();
+	var eb_width = parseInt($a.css('width')),
+			mlGenerated  = false,
+			main_height = $m.height();
 
 	//prepare animating & fx functions
-	function follow(){
-		$a.animate({top: ($(window).scrollTop()+eb_top)+'px' }, 350);
-	}
-
 	function showShortcuts(){
-		$sc.stop().css({opacity:1});
+		$sc.stop().animate({opacity:1});
 	}
 
 	function collapse(){
 		$m.toggleClass('collapsed');
 		if ($m.hasClass('collapsed')){
-			if($m.hasClass('firstTime')) {
-				var animTime = 0;
-				$m.removeClass('firstTime');
-			} else {
-				var animTime = 250
-			};
-			$m.stop().animate({ height: '39px'},animTime);
-			$a.stop().animate({ left: '-'+(eb_width-60)+'px'},animTime, function(){showShortcuts();});
+			$m.stop().animate({ height: '39px'},250);
+			$a.stop().animate({ left: '-'+(eb_width-60)+'px'},250, function(){showShortcuts();});
 		}else{
 			$sc.stop().animate({opacity:0},100);
 			$m.stop().animate({ height: main_height+'px'},250);
@@ -48,24 +36,20 @@ jQuery(document).ready(function($) {
 	}
 
 	//CSS manipulation and FX/event handlers
+	//hide 'collapse' icon overlay and set hover
 	$s.css({opacity: 0})
 		.hover(function(){$(this).animate({opacity: 1},150);},
 			function(){$(this).animate({opacity: 0},150);});
 
-	$a.css({ position: 'absolute' })
-	$(window).bind('scroll', function(){
-		clearTimeout(eb_animate);
-		eb_animate = setTimeout(function(){ follow(); }, 250);
-	});
-
+	//hide shortcuts
 	$sc.css({display:'block', opacity: 0});
+	if ($m.hasClass('collapsed')) { //if collapsed
+		$m.css({ height: '39px' });
+		$a.css({ left: '-'+(eb_width-60)+'px' });
+		$sc.css({opacity: 1});
+	}
 
 	$s.click(function(){ collapse(); });
-
-	if ($m.hasClass('collapsed')) {
-		$m.removeClass('collapsed');
-		collapse();
-	}
 
 	$sc.find('.hide').click(function(e){
 		e.preventDefault();
