@@ -218,7 +218,7 @@ OUT;
 		<ul class='shortcuts'>
 			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
 			<li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
-			<li><a href='{$this->config->urls->admin}adminbar/?curPageId={$this->page->id}' class='modal pages'>Pages tree</a></li>
+			<li><a href='{$this->config->urls->admin}adminbar/?curPageId={$this->page->id}' class='{$modalClass} pages'>Pages tree</a></li>
 			<li><a href='#' class='hide'>Hide</a></li>
 		</ul>
 		</div>
