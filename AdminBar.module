@@ -187,14 +187,14 @@ OUT;
 	<div id='adminbar'>
 		<div class='main collapsed'>
 			<div class='logged-in'><a href='{$this->config->urls->admin}access/user/edit?id={$this->user->id}'>{$this->user->name}</a></div>
-				<ul class='dates'>
-					<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
-					<li class='modified' title='Modified'>{$page->modifiedUser} | {$dateModified}</li>
-				</ul>
-				<ul class='menu'>
-					<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>
-					<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>
-				</ul>
+			<ul class='dates'>
+				<li class='created' title='Created'>{$page->createdUser} | {$dateCreated}</li>
+				<li class='modified' title='Modified'>{$page->modifiedUser} | {$dateModified}</li>
+			</ul>
+			<ul class='menu'>
+				<li><a href='{$this->config->urls->admin}' class='pages'>Go to administration</a></li>
+				<li><a href='{$this->config->urls->admin}logout/' class='logout'>Logout</a></li>
+			</ul>
 		</div>
 		<ul class='shortcuts'>
 			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
