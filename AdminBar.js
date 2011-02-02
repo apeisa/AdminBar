@@ -13,6 +13,9 @@ jQuery(document).ready(function($) {
 		$mlLink		= $a.find('.modal'), // Links that should open in modal
 		$mlBg		= $('<div id="ab-modal-bg" />'); // Modal bg
 
+	// state variables
+	var mlGenerated;
+
 	// Changes between shortcuts and "main" window
 	function flip(){
 		if($m.hasClass('collapsed')){
