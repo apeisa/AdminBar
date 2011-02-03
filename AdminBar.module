@@ -199,7 +199,7 @@ OUT;
 		<ul class='shortcuts'>
 			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
 			<li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
-			<li><a href='{$this->config->urls->admin}adminbar/?curPageId={$this->page->id}' class='{$modalClass} pages'>Pages tree</a></li>
+			<li><a href='{$this->config->urls->admin}adminbar/ab-sitemap/?curPageId={$this->page->id}' class='{$modalClass} pages'>Pages tree</a></li>
 			<li><a href='#' class='hide'>Hide</a></li>
 		</ul>
 	</div>
@@ -269,10 +269,13 @@ OUT;
 
 	// Native ab-modalpages, at least for sitemap
 	private function _createAdminBarPages() {
+
+		$adminId = $this->config->adminRootPageID;
+
 		$abName = "adminbar";
 		$abFieldGroup = $this->fieldgroups->get($abName);
 		$abTemplate = $this->templates->get($abName);
-		$abPage = $this->pages->get("/processwire/{$abName}/"); // TODO: How to remove hardcoding admin url?? $this->config->urls->admin doesn't seem to work?
+		$abPage = $this->pages->get("title=$abName");
 
 		if(is_null($abFieldGroup))
 			$abFieldGroup = $this->_createAdminBarFieldGroup($abName);
@@ -305,7 +308,7 @@ OUT;
 		// create /adminbar/ page under admin
 		$abPage = new Page();
 		$abPage->template = $abTemplate;
-		$abPage->parent = $this->pages->get("/processwire/"); // TODO: remove url hardcoding
+		$abPage->parent = $this->pages->get($this->config->adminRootPageID);
 		$abPage->title = $abName;
 		$abPage->name = $abName;
 		$abPage->status = 1031; // hidden & locked
@@ -315,8 +318,8 @@ OUT;
 		$abSitemapPage = new Page();
 		$abSitemapPage->template = $abTemplate;
 		$abSitemapPage->parent = $abPage;
-		$abSitemapPage->title = 'sitemap';
-		$abSitemapPage->name = 'sitemap';
+		$abSitemapPage->title = 'ab-sitemap';
+		$abSitemapPage->name = 'ab-sitemap';
 		$abSitemapPage->status = 1031;
 		return $abSitemapPage->save();
 	}
