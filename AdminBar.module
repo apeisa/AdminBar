@@ -72,8 +72,6 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 	 */
 	public function init() {
 
-		$this->modules->get("JqueryCore");
-
 		$this->pages->addHookAfter('save', $this, 'pageSave');
 		$this->addHookAfter('Page::render', $this, "pageRender");
 
