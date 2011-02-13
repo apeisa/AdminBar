@@ -71,6 +71,9 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 	 *
 	 */
 	public function init() {
+
+		$this->modules->get("JqueryCore");
+
 		$this->pages->addHookAfter('save', $this, 'pageSave');
 		$this->addHookAfter('Page::render', $this, "pageRender");
 
@@ -103,6 +106,15 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		$field->name = "showModal";
 		$field->label = "Use modal window";
 		$field->description = "Whether open pages in modal (overlay) window or goes to traditional administration.";
+		$field->value = 1; // providing a "checked" value for the checkbox is necessary
+		$field->attr('checked', empty($data['showModal']) ? '' : 'checked');
+		$fields->add($field);
+
+		// load jQuery field
+		$field = $modules->get("InputfieldCheckbox");
+		$field->name = "loadJquery";
+		$field->label = "Load jQuery";
+		$field->description = "AdminBar requires jQuery. If you use jQuery on your front end templates you may uncheck this. Otherwise, keep this checked.";
 		$field->value = 1; // providing a "checked" value for the checkbox is necessary
 		$field->attr('checked', empty($data['showModal']) ? '' : 'checked');
 		$fields->add($field);
@@ -155,14 +167,22 @@ OUT;
 		// if the page isn't editable, or if it's using the admin template, abort.
 		if(!$page->editable() || $page->template == 'admin' || $page->template == 'adminbar') return;
 
+
 		$this->_createAdminBarPages();
+
+		$jQueryUrl = $this->config->urls->JqueryCore . "JqueryCore";
 
 		// find the location of this module for linking css and js files
 		$url = $this->config->urls->AdminBar . "AdminBar";
 
+		$out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css' />";
+
+		if ($this->loadJquery) {
+			$out .= "\n\t<script type='text/javascript' src='$jQueryUrl.js'></script>";
+		}
+
 		// the css and js links we're going to add
-		$out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css' />" .
-				"\n\t<script type='text/javascript' src='$url.js'></script>" .
+		 $out .= "\n\t<script type='text/javascript' src='$url.js'></script>" .
 				"\n</head>";
 
 
@@ -199,11 +219,16 @@ OUT;
 		<ul class='shortcuts'>
 			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
 			<li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
-			<li><a href='{$this->config->urls->admin}adminbar/ab-sitemap/?curPageId={$this->page->id}' class='{$modalClass} pages'>Pages tree</a></li>
+			<li><a href='{$this->config->urls->admin}adminbar/ab-sitemap/?curPageId={$this->page->id}{$modalGet}' class='{$modalClass} pages'>Pages tree</a></li>
 			<li><a href='#' class='hide'>Hide</a></li>
 		</ul>
 	</div>
 OUT;
+
+
+// Using normal admin as sitemap
+//<li><a href='{$this->config->urls->admin}page/?open={$this->page->id}{$modalGet}' class='{$modalClass} pages'>Pages tree</a></li>
+
 		// Saved page through modal, we notify the user that page was saved
 		if ($this->session->pageSaved) {
 			$out .= "<div id='ab-pagesaved-cont'><div id='ab-pagesaved'>Page {$this->session->pageSaved} saved succesfully</div></div>";
