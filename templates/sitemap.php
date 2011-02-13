@@ -2,7 +2,7 @@
 function sitemapListPage($page, $adminUrl) {
 
 	// Just to avoid insane loops in huge sites
-	$maxChilds = 20;
+	$maxChilds = 30;
 
 	if (isset($_GET['curPageId'])) {
 		$curPageId = $_GET['curPageId'];
@@ -17,15 +17,15 @@ function sitemapListPage($page, $adminUrl) {
 
 	echo "<li><a class='{$class}' target='_top' title='{$page->url}' href='{$page->url}'>$page->title</a>";
 
-	$numChildren = $page->numChildren;
+	$numChildren = $page->children("limit=2")->getTotal();
 	$moreChildren = $numChildren - $maxChilds;
 
-	if($page->numChildren) {
+	if($numChildren) {
 		echo "<ul>";
 			foreach($page->children("limit=$maxChilds") as $child) {
 				sitemapListPage($child, $adminUrl);
 			}
-			if($page->numChildren > $maxChilds) {
+			if($numChildren > $maxChilds) {
 				echo "<li><i><a target='_top' href='{$adminUrl}'>... {$moreChildren} more pages, you can view them through admin.</a></i></li>";
 			}
 		echo "</ul>";
