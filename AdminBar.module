@@ -11,7 +11,7 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Admin Bar',
-			'summary' => 'Fast and easy in-page content editing, by apeisa & adamkiss',
+			'summary' => 'Fast and easy in-page content editing',
 			'href' => 'http://processwire.com/talk/index.php/topic,56.0.html',
 			'version' => 100,
 			'permanent' => false,
@@ -215,11 +215,12 @@ OUT;
 			</ul>
 		</div>
 		<ul class='shortcuts'>
-			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit this page</a></li>
-			<li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add child</a></li>
-			<li><a href='{$this->config->urls->admin}adminbar/ab-sitemap/?curPageId={$this->page->id}{$modalGet}' class='{$modalClass} pages'>Pages tree</a></li>
+			<li><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit page content & settings</a></li>
+			<li><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add a new page</a></li>
+			<li><a href='{$this->config->urls->admin}adminbar/ab-sitemap/?curPageId={$this->page->id}{$modalGet}' class='{$modalClass} pages'>View sitemap</a></li>
 			<li><a href='#' class='hide'>Hide</a></li>
 		</ul>
+		<div class='tooltip'><span class='arrow'></span><span class='content'></span></div>
 	</div>
 OUT;
 

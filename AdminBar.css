@@ -8,7 +8,7 @@
 */
 
 #adminbar{
-	position: fixed; left: 0px; top: 100px; width: 60px;
+	position: fixed; left: 0px; top: 100px; width: 300px;
 	background: #dbe9ee;
 	font: normal 12px/20px "Lucida Grande", Tahoma, sans-serif;
 }
@@ -69,10 +69,34 @@
 
 	#adminbar .shortcuts{ left: 0px; top: 40px; width: 40px; position: absolute; z-index: 999; }
 	#adminbar .shortcuts li a{ padding: 20px; height: 20px; width: 20px; text-indent: -9999px; }
-		#adminbar .shortcuts .add { background-position: 0 -140px; }
+		#adminbar .shortcuts .edit { background-image: url(pen_32x32.png); background-position: 16px 16px; }
+		#adminbar .shortcuts .add { background-image: url(plus_alt_32x32.png); background-position: 16px 16px; }
 		#adminbar .shortcuts .pages { background-position: 0 -80px; }
-		#adminbar .shortcuts .edit { background-position: 0 -200px; }
-		#adminbar .shortcuts .hide { background: #dbe9ee; height: 20px; padding: 2px 20px; font-weight: normal; text-indent: inherit; }
+		#adminbar .shortcuts .hide { background: #dbe9ee; height: 18px; padding: 1px 20px; font-size: 9px; text-transform: uppercase; font-weight: normal; text-indent: inherit; }
+
+	/* Tooltip */
+	#adminbar .tooltip {
+		position: absolute;
+		left: 80px;
+		top: 120px;
+		padding: 5px 10px 5px 3px;
+		background: #3e545b;
+		color: white;
+		z-index: 998;
+		display: none;
+	}
+		#adminbar .tooltip .arrow {
+			position: absolute;
+			top: 0;
+			left: -30px;
+			border-color: transparent #3e545b transparent transparent;
+			border-style:solid;
+			border-width: 15px;
+			width:0;
+			height:0;
+			line-height: 0 !important;
+			font-size: 0 !important;
+		}
 
 
 /* PAGESAVE NOTIFICATION STYLES */
@@ -108,7 +132,7 @@
 }
 
 #ab-modal {
-  position: absolute;
+  position: fixed;
   z-index: 999;
   top: 50px;
   left: 10%;

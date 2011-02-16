@@ -9,6 +9,8 @@ jQuery(document).ready(function($) {
 		$m			= $a.find('.main'),
 		$s			= $('<div class="collapse-switch"></div>').appendTo($m),
 		$sc			= $a.find('ul.shortcuts:eq(0)'),
+		$scLinks	= $sc.find('a').not('.hide'),
+		$tooltip	= $a.find('.tooltip'),
 		$ml         = $('<div id="ab-modal" />'), //
 		$mlLink		= $a.find('.modal'), // Links that should open in modal
 		$mlBg		= $('<div id="ab-modal-bg" />'); // Modal bg
@@ -38,6 +40,25 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		$a.hide('fast');
 	});
+
+	$scLinks.hover(
+		// Hover on shortcut link
+		function(){
+			var $this = $(this);
+			var position = $this.position();
+			var html = $this.html();
+
+			$tooltip.show().css({
+				'top': (position.top + 55) + 'px'
+				})
+			.find('.content').html(html);
+		},
+		// Hover out from shortcut link
+		function(){
+			$tooltip.hide();
+		}
+	);
+
 
 	// Bind custom events for modal background (open, close & click)
 	$mlBg.
