@@ -12,7 +12,7 @@
 	background: #dbe9ee;
 	font: normal 12px/20px "Lucida Grande", Tahoma, sans-serif;
 }
-	#adminbar ul { list-style: none; }
+	#adminbar ul, #adminbar li { list-style: none; margin: 0; padding: 0; }
 	/* main color settings for links */
 	#adminbar .menu li a, #adminbar .shortcuts li a{
 		display: block;
