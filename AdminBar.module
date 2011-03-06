@@ -299,7 +299,7 @@ OUT;
 		$abName = "adminbar";
 		$abFieldGroup = $this->fieldgroups->get($abName);
 		$abTemplate = $this->templates->get($abName);
-		$abPage = $this->pages->get("title=$abName");
+		$abPage = $this->pages->get("name=$abName");
 
 		if(is_null($abFieldGroup))
 			$abFieldGroup = $this->_createAdminBarFieldGroup($abName);
@@ -314,7 +314,6 @@ OUT;
 	private function _createAdminBarFieldGroup($fieldGroupName) {
 		$abFieldGroup = new Fieldgroup();
 		$abFieldGroup->name = $fieldGroupName;
-		$abFieldGroup->add("title");
 		$abFieldGroup->save();
 		return $abFieldGroup;
 	}
@@ -333,7 +332,6 @@ OUT;
 		$abPage = new Page();
 		$abPage->template = $abTemplate;
 		$abPage->parent = $this->pages->get($this->config->adminRootPageID);
-		$abPage->title = $abName;
 		$abPage->name = $abName;
 		$abPage->status = 1031; // hidden & locked
 		$abPage->save();
@@ -342,7 +340,6 @@ OUT;
 		$abSitemapPage = new Page();
 		$abSitemapPage->template = $abTemplate;
 		$abSitemapPage->parent = $abPage;
-		$abSitemapPage->title = 'ab-sitemap';
 		$abSitemapPage->name = 'ab-sitemap';
 		$abSitemapPage->status = 1031;
 		return $abSitemapPage->save();
