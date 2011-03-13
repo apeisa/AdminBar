@@ -12,6 +12,7 @@ jQuery(document).ready(function($) {
 		$scLinks	= $sc.find('a').not('.hide'),
 		$tooltip	= $a.find('.tooltip'),
 		$ml         = $('<div id="ab-modal" />'), //
+		$mlClose    = $('<div id="ab-close-modal"><span>X</span> close</div>'), //
 		$mlLink		= $a.find('.modal'), // Links that should open in modal
 		$mlBg		= $('<div id="ab-modal-bg" />'); // Modal bg
 
@@ -77,6 +78,11 @@ jQuery(document).ready(function($) {
 		$this.trigger('close');
 	});
 
+	$mlClose.
+	bind('click', function(e) {
+		$mlBg.trigger('close');
+	});
+
 	// If there is pagesaved notification, hide it after a moment
 	$('#ab-pagesaved-cont').delay(2400).slideUp("slow");
 
@@ -101,6 +107,8 @@ jQuery(document).ready(function($) {
 			mlGenerated = true;
 			$mlBg.prependTo('body');
 			$ml.appendTo($mlBg);
+
+			$mlClose.appendTo($ml);
 
 			// We save the class of the link as the modal active state (modal edit or modal add)
 			$ml.data('activeState', e.target.className);

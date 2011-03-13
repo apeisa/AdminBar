@@ -124,7 +124,7 @@
   width: 100%;
   z-index: 998;
   position: absolute;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.7);
 }
 
 .ab-modal-bg-closed {
@@ -140,6 +140,36 @@
   border: 10px solid #dbe9ee;
   text-align: center;
   background: white;
+}
+
+#ab-close-modal {
+	position: absolute;
+	font-family: arial;
+	font-size: 12px;
+	line-height: 12px;
+	left: 20px;
+	top: -37px;
+	padding: 7px 12px 5px;
+	background: #93acba;
+	color: #fff;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-topleft: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+#ab-close-modal span {
+	font-weight: bold;
+	font-size: 15px;
+	line-height: 15px;
+}
+
+#ab-close-modal:hover {
+	cursor: pointer;
+	background: #f3008b;
+	color: black;
 }
 
 .ab-modal-closed {
