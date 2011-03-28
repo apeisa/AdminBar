@@ -16,5 +16,3 @@ Just put all files into /site/modules/AdminBar/ folder, then go admin -> modules
 // LICENSE
 GNU/GPL v2
 GNU GENERAL PUBLIC LICENSE
-
-Trying git
