@@ -1,177 +1,113 @@
-/*
-	AdminBar
-
-	colors:
-	- dark blue: #3e545b
-	- light blue: #dbe9ee
-	- hot pink: #f3008b
-*/
-
-#adminbar{
-	position: fixed; left: 0px; top: 100px; width: 300px;
-	background: #dbe9ee;
-	font: normal 12px/20px "Lucida Grande", Tahoma, sans-serif;
-}
-	#adminbar ul, #adminbar li { list-style: none; margin: 0; padding: 0; }
-	/* main color settings for links */
-	#adminbar .menu li a, #adminbar .shortcuts li a{
-		display: block;
-		background-color: #dbe9ee; border-top: 1px solid #e6f0f3; border-bottom: 1px solid #cbdadf;
-		color: black; font-weight: bold; text-decoration: none; text-shadow: 0px 1px 0px white;
-	}
-	#adminbar .menu li a:hover, #adminbar .shortcuts li a:hover{
-		background-color: #f3008b; border-top: 1px solid #fa99d1; border-bottom: 1px solid #c2006f;
-		color: white; text-shadow: 0px 1px 0px rgba(0,0,0,.4);
-	}
-
-	/* main box (the one that holds data when NOT collapsed) */
-	#adminbar .main {
-		overflow: hidden; left: -200px; width: 259px; position: absolute; z-index: 999;
-		background: #dbe9ee; border-bottom: 1px solid #3e545b; border-right: 1px solid #3e545b;
-	}
-
-	/* logged in user bar */
-	#adminbar .logged-in {
-		height: 20px; padding: 10px 10px 10px 5px;
-		background: #3e545b url(sprites.png) no-repeat 200px -40px; border-bottom: 1px solid #4c6168;
-	}
-	#adminbar .logged-in a {
-		color: #dbe9ee; display: block; font-weight: bold; height: 20px; text-shadow: 0px 1px 1px rgba(0,0,0,.4);
-		padding-left: 30px; background: url(sprites.png) no-repeat -68px -9px;
-	}
-	#adminbar .logged-in a:hover { color: white; }
-
-	/* collapse switch */
-	#adminbar .collapse-switch {
-		position: absolute; right: 0; top: 0; height: 40px; width: 60px; opacity: 0;
-		background: url(sprites.png) no-repeat 2px 2px; cursor: pointer;
-	}
-
-	/* cr&md info */
-	#adminbar .dates { background: #5a6f75; border-top: 1px solid #3e545b; overflow: auto;}
-	#adminbar .dates li {
-		display: block; padding: 5px 5px 5px 35px;
-		background: url(sprites.png) no-repeat; border-bottom: 1px solid #61767c; text-shadow: 0px 1px 0px #3e545b;
-	}
-	#adminbar li.created { background-position: -63px -45px; color: #dbe9ee; }
-	#adminbar li.modified { background-position: -63px -86px; color: white; font-weight: bold; margin-bottom: 10px; }
-
-	/* menu */
-	#adminbar li a{
-		display: block; padding: 5px 5px 5px 35px;
-		background: url(sprites.png) no-repeat; border-bottom: 1px solid #61767c; text-shadow: 0px 1px 0px #3e545b;
-	}
-		#adminbar .menu .edit { background-position: -63px -125px; }
-		#adminbar .menu .add { background-position: -63px -166px; }
-		#adminbar .menu .pages { background-position: -63px -203px; }
-		#adminbar .menu .logout { background-position: -63px -245px; }
-		#adminbar .menu .edit { background-position: -63px -125px; }
-
-	#adminbar .shortcuts{ left: 0px; top: 40px; width: 40px; position: absolute; z-index: 999; }
-	#adminbar .shortcuts li a{ padding: 20px; height: 20px; width: 20px; text-indent: -9999px; }
-		#adminbar .shortcuts .edit { background-image: url(pen_32x32.png); background-position: 16px 16px; }
-		#adminbar .shortcuts .add { background-image: url(plus_alt_32x32.png); background-position: 16px 16px; }
-		#adminbar .shortcuts .pages { background-position: 0 -80px; }
-		#adminbar .shortcuts .hide { background: #dbe9ee; height: 18px; padding: 1px 20px; font-size: 9px; text-transform: uppercase; font-weight: normal; text-indent: inherit; }
-
-	/* Tooltip */
-	#adminbar .tooltip {
-		position: absolute;
-		left: 80px;
-		top: 120px;
-		padding: 5px 10px 5px 3px;
-		background: #3e545b;
-		color: white;
-		z-index: 998;
-		display: none;
-	}
-		#adminbar .tooltip .arrow {
-			position: absolute;
-			top: 0;
-			left: -30px;
-			border-color: transparent #3e545b transparent transparent;
-			border-style:solid;
-			border-width: 15px;
-			width:0;
-			height:0;
-			line-height: 0 !important;
-			font-size: 0 !important;
-		}
-
-
-/* PAGESAVE NOTIFICATION STYLES */
-#ab-pagesaved-cont {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  height: 40px;
+html {
+	padding-top: 40px;
 }
 
-#ab-pagesaved {
-  margin: 0 auto;
-  width: 400px;
-  height: 20px;
-  padding: 15px;
-  font-weight: bold;
-  background: #dbe9ee;
-  border: 1px solid #3e545b;
-  border-top: none;
+body {
+	background-position: 0 40px;
+	position: relative;
+}
+
+#adminbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 40px;
+	margin: 0;
+	padding: 0;
+	background: white url(sprite.png) repeat-x 0px 1px;
+	z-index: 999;
+}
+
+#adminbar li {
+	display: block;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	height: 40px;
+	border-right: 1px solid #cecece;
+}
+
+#adminbar li a {
+	display: block;
+	float: left;
+	height: 40px;
+	line-height: 42px;
+	padding: 0 10px 0 36px;
+	font-family: arial, sans-serif;
+	color: #505050;
+}
+
+#adminbar li a:hover {
+	text-decoration: none;
+}
+
+#adminbar .admin, #adminbar .admin:hover {
+	float: right;
+	background: url(sprite.png) no-repeat 0px -42px;
+}
+
+#adminbar .admin a:hover  {
+	text-decoration: underline;
+}
+
+#adminbar .active, #adminbar li.active:hover {
+	background: url(sprite.png) repeat-x 0px -380px;
 }
 
 
-/* MODAL STYLES */
-#ab-modal-bg {
-  width: 100%;
-  z-index: 998;
-  position: absolute;
-  background: rgba(0,0,0,0.7);
+
+#adminbar .browse {
+	margin-left: 20px;
+	border-left: 1px solid #cecece;
 }
 
-.ab-modal-bg-closed {
-  display: none;
+#adminbar .browse a {
+	background: transparent url(sprite.png) 10px -182px;
+}
+
+#adminbar .edit a {
+	background: transparent url(sprite.png) 12px -97px;
+}
+
+#adminbar .add-page a {
+	background: transparent url(sprite.png) 12px -140px;
+}
+
+#adminbar .permissions a {
+	background: transparent url(sprite.png) 12px -327px;
+}
+
+#adminbar li:hover {
+	background: #dde1e4;
 }
 
 #ab-modal {
-  position: fixed;
-  z-index: 999;
-  top: 50px;
-  left: 10%;
-  right: 10%;
-  border: 10px solid #dbe9ee;
-  text-align: center;
-  background: white;
-}
-
-#ab-close-modal {
-	position: absolute;
-	font-family: arial;
-	font-size: 12px;
-	line-height: 12px;
+	z-index: 998;
+	background: white;
+	position: fixed;
+	top: 40px;
 	left: 20px;
-	top: -37px;
-	padding: 7px 12px 5px;
-	background: #93acba;
-	color: #fff;
-	-webkit-border-top-right-radius: 5px;
-	-webkit-border-top-left-radius: 5px;
-	-moz-border-radius-topright: 5px;
-	-moz-border-radius-topleft: 5px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+	right: 20px;
 }
 
-#ab-close-modal span {
-	font-weight: bold;
-	font-size: 15px;
-	line-height: 15px;
+#ab-modal.hidden {
+	border: none;
 }
 
-#ab-close-modal:hover {
-	cursor: pointer;
-	background: #f3008b;
-	color: black;
+#ab-modal.loading {
+	background: white url(loading.gif) 13px 6px no-repeat;
 }
 
-.ab-modal-closed {
-  display: none;
+#ab-pagesaved {
+	background: white;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	border-bottom: 1px solid #cecece;
 }
