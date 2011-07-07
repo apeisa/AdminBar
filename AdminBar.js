@@ -60,18 +60,19 @@ jQuery(document).ready(function($) {
 	
 	function slideDown(link) {
 		
-		modalHeight = $(window).height() - 60; 
+		modalHeight = $(window).height() - 40; 
 		$modal.animate({
 			height: modalHeight + 'px'
 		},
 		
 		// Animation time
-		200,
+		300,
 		
 		// After slide is done
 		function(){
-			$iframe.hide().css('height', $modal.height()).fadeIn("fast");
+			$iframe.hide().css('height', $modal.height()).show();
 		});
+		document.body.style.overflow='hidden';
 	};
 	
 	function slideUp(clean) {
@@ -83,15 +84,16 @@ jQuery(document).ready(function($) {
 		$adminbar.data('active', 'browse');
 		$modal.removeClass('loading').stop().animate({
 			height: '0px'
-		}, 100, function(){
+		}, 300, function(){
 			$modal.addClass('loading');
 		});
+		document.body.style.overflow='auto';
 		
 	};
 	
 	$(window).resize(function() {
 		if ($modal.height() > 1) {
-			modalHeight = $(window).height() - 60; 
+			modalHeight = $(window).height() - 40; 
 			$modal.stop().animate({
 				height: modalHeight + 'px'
 			},
@@ -104,7 +106,7 @@ jQuery(document).ready(function($) {
 		
 	});
 	
-	$("#ab-pagesaved").delay(3000).slideUp("fast");
+	$("#ab-pagesaved").delay(3000).slideUp("normal");
 	
 	
 

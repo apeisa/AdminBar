@@ -59,7 +59,6 @@ body {
 
 
 #adminbar .browse {
-	margin-left: 20px;
 	border-left: 1px solid #cecece;
 }
 
@@ -88,8 +87,8 @@ body {
 	background: white;
 	position: fixed;
 	top: 40px;
-	left: 20px;
-	right: 20px;
+	left: 0px;
+	right: 0px;
 }
 
 #ab-modal.hidden {
