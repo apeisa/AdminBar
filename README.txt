@@ -1,6 +1,9 @@
 AdminBar for ProcessWire by @apeisa (initial ui design & coding by @adamkiss)
 
 // INSTALLATION
+PW 2.1 Use branch AdminBarNew
+PW 2.0 Use master branch
+
 Just put all files into /site/modules/AdminBar/ folder, then go admin -> modules -> and install AdminBar
 
 // MINOR ISSUES
