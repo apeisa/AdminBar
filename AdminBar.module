@@ -153,6 +153,7 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 jQuery(document).ready(function($) {
 	$('#PageEditTabs').find('#_ProcessPageEditView').parent().remove();
 	$('#PageEditTabs').find('#_ProcessPageEditChildren').parent().remove();
+	$('#template').attr('disabled', 'disabled');
 });
 </script>
 OUT;
