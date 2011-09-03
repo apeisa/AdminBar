@@ -1,4 +1,6 @@
-AdminBar for ProcessWire by @apeisa (initial ui design & coding by @adamkiss)
+AdminBar for ProcessWire 2.0 by @apeisa (initial ui design & coding by @adamkiss)
+
+IMPORTANT: for ProcessWire 2.1 please use new development version: https://github.com/apeisa/AdminBar/tree/AdminBarNew
 
 // INSTALLATION
 PW 2.1 Use branch AdminBarNew
