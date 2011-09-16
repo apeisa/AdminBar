@@ -161,7 +161,7 @@ OUT;
 		}
 
 		// if the page isn't editable, or if it's using the admin template, abort.
-		if(!$page->editable() || $page->template == 'admin' || $page->template == 'adminbar') return;
+		if($page->template == 'admin' || $page->template == 'adminbar') return;
 
 		$jQueryUrl = $this->config->urls->JqueryCore . "JqueryCore";
 
@@ -199,8 +199,17 @@ OUT;
 		$out  = <<<OUT
 	<ul id='adminbar'>
 		<li class='browse active'><a href='#'>Browse</a></li>
-		<li class='edit'><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit</a></li>
 OUT;
+
+if ($page->editable() && !$page->is(Page::statusLocked)) {
+	$out .= "<li class='edit'><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit</a></li>";
+} else {
+	if (!$page->editable()) {
+		$out .= "<li class='permissions'><span>No editing rights</span></li>";
+	} else if ($page->is(Page::statusLocked)) {
+		$out .= "<li class='permissions'><span>Page is locked</span></li>";
+	}
+}
 
 if ($page->addable()) {
 	$out .= "<li class='add-page'><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add Page</a></li>";

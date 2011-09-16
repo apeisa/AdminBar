@@ -29,7 +29,7 @@ body {
 	border-right: 1px solid #cecece;
 }
 
-#adminbar li a {
+#adminbar li a, #adminbar li span {
 	display: block;
 	float: left;
 	height: 40px;
@@ -37,11 +37,13 @@ body {
 	padding: 0 10px 0 36px;
 	font-family: arial, sans-serif;
 	color: #505050;
+	text-decoration: none;
 }
 
 #adminbar li a:hover {
 	text-decoration: none;
 }
+
 
 #adminbar .admin, #adminbar .admin:hover {
 	float: right;
@@ -74,12 +76,16 @@ body {
 	background: transparent url(sprite.png) 12px -140px;
 }
 
-#adminbar .permissions a {
+#adminbar .permissions span {
 	background: transparent url(sprite.png) 12px -327px;
 }
 
 #adminbar li:hover {
 	background: #dde1e4;
+}
+
+#adminbar li.permissions:hover {
+	background: inherit;
 }
 
 #ab-modal {
