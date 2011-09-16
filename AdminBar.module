@@ -157,7 +157,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 OUT;
-			$event->return = str_ireplace('</head>', $out, $event->return);
+			$event->return = str_ireplace('</body>', $out, $event->return);
 		}
 
 		// if the page isn't editable, or if it's using the admin template, abort.
@@ -176,11 +176,11 @@ OUT;
 
 		// the css and js links we're going to add
 		 $out .= "\n\t<script type='text/javascript' src='$url.js'></script>" .
-				"\n</head>";
+				"\n</body>";
 
 
 		// modify the value returned by $page->render() to include our css and js files
-		$event->return = str_ireplace('</head>', $out, $event->return);
+		$event->return = str_ireplace('</body>', $out, $event->return);
 
 		// If settings for showModal is checked, then we need modalClass to open
 		// it in modal (js) and modalGet to show modal version of admin
