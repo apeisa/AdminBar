@@ -200,7 +200,13 @@ OUT;
 	<ul id='adminbar'>
 		<li class='browse active'><a href='#'>Browse</a></li>
 		<li class='edit'><a href='{$this->config->urls->admin}page/edit/?id={$this->page->id}{$modalGet}' class='{$modalClass} edit'>Edit</a></li>
-		<li class='add-page'><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add Page</a></li>
+OUT;
+
+if ($page->addable()) {
+	$out .= "<li class='add-page'><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add Page</a></li>";
+}
+
+$out .= <<<OUT
 		<li class='admin'><a href='{$this->config->urls->admin}page/?open={$this->page->id}' class='pages'>Admin</a></li>
 	</ul>
 OUT;
