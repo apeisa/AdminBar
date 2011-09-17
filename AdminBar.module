@@ -71,6 +71,11 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 	 *
 	 */
 	public function init() {
+		
+		if ($this->user->isGuest()) return false;
+		
+		$ab_permission = $this->permissions->get('adminbar');
+		if(!$this->user->hasPermission($ab_permission)) return false;
 
 		$this->pages->addHookAfter('save', $this, 'pageSave');
 		$this->addHookAfter('Page::render', $this, "pageRender");
@@ -273,5 +278,16 @@ OUT;
 		if(preg_match('/[?&]modal=/', $url)) return;
 		$url .= (count($this->input->get) ? '&' : '?') . "modal=1";
 		$event->arguments(0, $url);
+	}
+	
+	public function ___install() {
+		$ab_permission = $this->permissions->add('adminbar');
+		$ab_permission->title = "Can see and use AdminBar";
+		$ab_permission->save();
+	}
+	
+	public function ___uninstall() {
+		$ab_permission = $this->permissions->get('adminbar');
+		$this->permissions->delete($ab_permission);
 	}
 }
