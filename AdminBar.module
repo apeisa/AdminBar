@@ -104,8 +104,8 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		// showModal field
 		$field = $modules->get("InputfieldCheckbox");
 		$field->name = "showModal";
-		$field->label = "Use modal window";
-		$field->description = "Whether open pages in modal (overlay) window or goes to traditional administration.";
+		$field->label = "Use slide overlay";
+		$field->description = "Whether clicking edit buttons shows slide view (overlay/modal) or goes to traditional admin.";
 		$field->value = 1; // providing a "checked" value for the checkbox is necessary
 		$field->attr('checked', empty($data['showModal']) ? '' : 'checked');
 		$fields->add($field);
@@ -179,6 +179,12 @@ OUT;
 		$url = $this->config->urls->AdminBar . "AdminBar";
 
 		$out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css' />";
+		
+		// Allows to customize css without touching module files or adding own files in templates
+		if(is_file($this->config->paths->AdminBar . "AdminBarCustom.css")){
+			$out .=  "\n\t<link rel='stylesheet' type='text/css' href='{$url}Custom.css' />";
+		}
+		
 
 		if ($this->loadJquery) {
 			$out .= "\n\t<script type='text/javascript' src='$jQueryUrl.js'></script>";
@@ -201,6 +207,15 @@ OUT;
 			$modalClass = '';
 			$modalGet = '';
 		}
+		
+		// Default text to show when adding new pages...
+		$templateTitle = "page";
+		
+		// ...and if only one template is allowed, we show it's name instead of default "page"
+		if(count($page->template->childTemplates) == 1) {
+			$childTemplates = $page->template->childTemplates;
+			$templateTitle = $this->templates->get(reset($childTemplates));
+		}
 
 		// Here we create markup needed by AdminBar.
 		$out  = <<<OUT
@@ -219,11 +234,11 @@ if ($page->editable() && !$page->is(Page::statusLocked)) {
 }
 
 if ($page->addable()) {
-	$out .= "<li class='add-page'><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>Add Page</a></li>";
+	$out .= "<li class='add-page'><a href='{$this->config->urls->admin}page/add/?parent_id={$this->page->id}{$modalGet}' class='{$modalClass} add'>New {$templateTitle}</a></li>";
 }
 
 $out .= <<<OUT
-		<li class='admin'><a href='{$this->config->urls->admin}page/?open={$this->page->id}' class='pages'>Admin</a></li>
+		<li class='admin'><a href='{$this->config->urls->admin}login/logout/'>Logout</a> <a href='{$this->config->urls->admin}page/?open={$this->page->id}' class='pages'>Admin</a></li>
 	</ul>
 OUT;
 
