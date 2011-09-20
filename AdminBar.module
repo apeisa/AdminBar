@@ -315,6 +315,6 @@ OUT;
 	
 	public function ___uninstall() {
 		$ab_permission = $this->permissions->get('adminbar');
-		$this->permissions->delete($ab_permission);
+		if (count($ab_permission) > 0) $this->permissions->delete($ab_permission);
 	}
 }
