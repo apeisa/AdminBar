@@ -116,7 +116,7 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 		$field->label = "Load jQuery";
 		$field->description = "AdminBar requires jQuery. If you use jQuery on your front end templates you may uncheck this. Otherwise, keep this checked.";
 		$field->value = 1; // providing a "checked" value for the checkbox is necessary
-		$field->attr('checked', empty($data['showModal']) ? '' : 'checked');
+		$field->attr('checked', empty($data['loadJquery']) ? '' : 'checked');
 		$fields->add($field);
 
 		return $fields;
