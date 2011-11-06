@@ -269,8 +269,12 @@ OUT;
 		$page = $event->arguments[0];
 
 		// If creating new page, then we do not add AB_pageSaved session var (this also prevents redirect and keeps modal alive)
-		if (!$page->is(Page::statusUnpublished))
-			$this->session->AB_pageSaved = "{$page->path}";
+		if ($page->is(Page::statusUnpublished)) return;
+		
+		// We don't care about admin pages
+		if ($page->template === wire('templates')->get("admin")) return;
+		
+		$this->session->AB_pageSaved = "{$page->path}";
 			
 		if ($page->isTrash()) {
 			$this->session->AB_pageSaved = $this->session->AB_parentPage;
