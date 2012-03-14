@@ -14,11 +14,6 @@ html {
 	padding-top: 40px;
 }
 
-body {
-	background-position: 0 40px;
-	position: relative;
-}
-
 #adminbar {
 	position: fixed;
 	top: 0;
