@@ -110,6 +110,8 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 
 		// $event->object always has the object instance that resulted in this call
 		$page = $event->object;
+		
+		if ($page->template == "form-builder") return;
 
 		// If we have saved page, admin page and in modal,
 		// then we make js-redirect and break out of modal (there seems to be no other way than js)
@@ -243,10 +245,11 @@ OUT;
 	 */
 	public function pageSave($event) {
 		$page = $event->arguments[0];
-
+		
 		// If creating new page, then we do not add AB_pageSaved session var (this also prevents redirect and keeps modal alive)
-		if (!$page->is(Page::statusUnpublished))
+		if (!$page->is(Page::statusUnpublished) && !strpos($page->path, "repeater")) {
 			$this->session->AB_pageSaved = "{$page->path}";
+		}
 
 		if ($page->isTrash()) {
 			$this->session->AB_pageSaved = $this->session->AB_parentPage;
