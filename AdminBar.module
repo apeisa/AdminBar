@@ -13,7 +13,7 @@ class AdminBar extends WireData implements Module, ConfigurableModule {
 			'title' => 'Admin Bar',
 			'summary' => 'Fast and easy in-page content editing',
 			'href' => 'http://processwire.com/talk/index.php/topic,56.0.html',
-			'version' => 100,
+			'version' => 101,
 			'permanent' => false,
 			'autoload' => true,
 			'singular' => true,
@@ -153,8 +153,9 @@ OUT;
 
 		// find the location of this module for linking css and js files
 		$url = $this->config->urls->AdminBar . "AdminBar";
+		$info = self::getModuleInfo();
 
-		$out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css' />";
+		$out =  "\n\t<link rel='stylesheet' type='text/css' href='$url.css?v={$info['version']}' />";
 
 		// Allows to customize css without touching module files or adding own files in templates
 		if(is_file($this->config->paths->AdminBar . "AdminBarCustom.css")){
@@ -167,7 +168,7 @@ OUT;
 		}
 
 		// the css and js links we're going to add
-		 $out .= "\n\t<script type='text/javascript' src='$url.js'></script>" .
+		$out .= "\n\t<script type='text/javascript' src='$url.js?v={$info['version']}'></script>" .
 				"\n</body>";
 
 
