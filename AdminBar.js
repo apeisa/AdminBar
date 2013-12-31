@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
 	function slideUp(clean) {
 		if (clean) {
 			$adminbar.data('active', 'browse');
-			$modal.find('iframe').remove();
+			$modal.find('iframe').attr('src', '').remove();
 			setActive($browse);
 		}
 		$adminbar.data('active', 'browse');
